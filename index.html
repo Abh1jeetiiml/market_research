@@ -5,20 +5,76 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
     <style>
+        /* Custom Styles */
+        body {
+            background-color: #f5f5f5;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
         .hidden {
             display: none;
         }
 
+        .title, .subtitle {
+            font-family: 'Lora', serif;
+            font-weight: bold;
+            text-align: center;
+        }
+
         .option-img {
-            width: 200px;
-            height: 200px;
+            width: 250px;
+            height: 250px;
             cursor: pointer;
-            border: 2px solid transparent;
-            transition: border-color 0.3s;
+            border-radius: 12px;
+            transition: transform 0.3s, box-shadow 0.3s;
         }
 
         .option-img:hover {
-            border-color: #3273dc;
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .columns {
+            margin-top: 20px;
+        }
+
+        .button.is-primary {
+            background-color: #3273dc;
+            border: none;
+            font-weight: bold;
+            padding: 12px 20px;
+            border-radius: 6px;
+            transition: background-color 0.3s;
+        }
+
+        .button.is-primary:hover {
+            background-color: #23d160;
+        }
+
+        .evaluation-table td input[type='radio'] {
+            transform: scale(1.2);
+        }
+
+        .evaluation-table th {
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .evaluation-table {
+            margin-top: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+
+        .thankyou {
+            text-align: center;
+            font-size: 1.5rem;
+            padding: 50px;
         }
     </style>
     <title>Image Selection Game</title>
@@ -34,111 +90,219 @@
                     <input class="input" type="email" id="email" placeholder="Enter your email" required>
                 </div>
             </div>
-            <button type="button" class="button is-primary" onclick="startGame()">Start Game</button>
+            <div class="field has-text-centered">
+                <button type="button" class="button is-primary" onclick="startGame()">Start Game</button>
+            </div>
         </form>
     </div>
 
     <!-- Game Section -->
     <div id="game" class="container hidden">
         <h3 class="subtitle mt-5">Which one will you purchase?</h3>
-        <h2 class="subtitle mt-5">Round <span id="round-number">1</span> of 3</h2>
+        <h2 class="subtitle mt-5">Round <span id="round-number">1</span> of <span id="total-rounds">10</span></h2>
         <div class="columns is-centered">
             <div class="column is-narrow">
-                <img src="" id="option1" class="option-img" onclick="selectOption('option1')" alt="Option 1">
+                <img src="" id="option1" class="option-img" onclick="selectOption('A')" alt="Option A">
             </div>
             <div class="column is-narrow">
-                <img src="" id="option2" class="option-img" onclick="selectOption('option2')" alt="Option 2">
+                <img src="" id="option2" class="option-img" onclick="selectOption('B')" alt="Option B">
             </div>
         </div>
     </div>
 
+    <!-- Evaluation Section -->
+    <div id="evaluation" class="container hidden">
+        <h2 class="title mt-5">Evaluate Round <span id="eval-round-number"></span></h2>
+        <div class="columns is-centered">
+            <div class="column is-narrow">
+                <img src="" id="eval-option1" class="option-img" alt="Option A">
+                <p class="has-text-centered">Option A</p>
+            </div>
+            <div class="column is-narrow">
+                <img src="" id="eval-option2" class="option-img" alt="Option B">
+                <p class="has-text-centered">Option B</p>
+            </div>
+        </div>
+        <table class="table evaluation-table is-fullwidth mt-5">
+            <thead>
+                <tr>
+                    <th>Parameter</th>
+                    <th>A</th>
+                    <th>B</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Durability</td>
+                    <td><input type='radio' name='durability' value='A'></td>
+                    <td><input type='radio' name='durability' value='B'></td>
+                </tr>
+                <tr>
+                    <td>Cost Effectiveness</td>
+                    <td><input type='radio' name='cost' value='A'></td>
+                    <td><input type='radio' name='cost' value='B'></td>
+                </tr>
+                <tr>
+                    <td>Convenience</td>
+                    <td><input type='radio' name='convenience' value='A'></td>
+                    <td><input type='radio' name='convenience' value='B'></td>
+                </tr>
+                <tr>
+                    <td>Hygienic</td>
+                    <td><input type='radio' name='hygienic' value='A'></td>
+                    <td><input type='radio' name='hygienic' value='B'></td>
+                </tr>
+                <tr>
+                    <td>Aesthetically Pleasing</td>
+                    <td><input type='radio' name='aesthetic' value='A'></td>
+                    <td><input type='radio' name='aesthetic' value='B'></td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="has-text-centered">
+            <button class="button is-primary" id="evaluation-submit-button" onclick="submitEvaluation()">Next</button>
+        </div>
+    </div>
+
     <!-- Thank You Message -->
-    <div id="thankyou" class="container hidden">
-        <h2 class="title mt-5">Thank you for participating!</h2>
+    <div id="thankyou" class="container hidden thankyou">
+        <h2 class="title">Thank you for participating!</h2>
     </div>
 
     <script>
-        const totalRounds = 3;
+        const totalRounds = 10;
         let currentRound = 0;
+        let evaluationRound = 0;
         let email = '';
         const responses = [];
         const options = [
             { option1: "image1.jpeg", option2: "image2.jpeg" },
             { option1: "image3.jpeg", option2: "image4.jpeg" },
-            { option1: "image5.jpeg", option2: "image6.jpeg" }
+            { option1: "image5.jpeg", option2: "image6.jpeg" },
+            { option1: "image7.jpeg", option2: "image8.jpeg" },
+            { option1: "image9.jpeg", option2: "image10.jpeg" },
+            { option1: "image11.jpeg", option2: "image12.jpeg" },
+            { option1: "image13.jpeg", option2: "image14.jpeg" },
+            { option1: "image15.jpeg", option2: "image16.jpeg" },
+            { option1: "image17.jpeg", option2: "image18.jpeg" },
+            { option1: "image19.jpeg", option2: "image20.jpeg" }
         ];
 
-        function sendToGoogleSheet(data) {
-            // Create a URL-encoded string from the data
-            const formDataString = data.map(entry => 
-                `round=${encodeURIComponent(entry.round)}&choice=${encodeURIComponent(entry.choice)}&email=${encodeURIComponent(entry.email)}`
-            ).join('&');
-
-            fetch('https://script.google.com/macros/s/AKfycbzajj44iv5X91Wo9Onk6htVYEb34DexSItd1SstzuAkbXJjxMyZdkDt6tU2_aAU4z3KZg/exec',  {
-                redirect: "follow",
-                method: "POST",
-                body: formDataString,  // Send URL-encoded form data
-                headers: {
-                    "Content-Type": "application/x-www-form-urlencoded;charset=utf-8",  // Set the content type to URL-encoded
-                },
-            })
-            .then(response => response.text())
-            .then(result => {
-                console.log('Success:', result);
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
-        }
-
         function startGame() {
-            const emailInput = document.getElementById('email');
-            email = emailInput.value;
+            email = document.getElementById('email').value;
 
-            if (!email) {
-                alert('Please enter a valid email!');
+            // Validate the email format
+            if (!validateEmail(email)) {
+                alert('Please enter a valid email address!');
                 return;
             }
 
             document.getElementById('homepage').classList.add('hidden');
             document.getElementById('game').classList.remove('hidden');
+            document.getElementById('total-rounds').textContent = totalRounds;
             loadRound();
         }
 
-        function loadRound() {
-            if (currentRound >= totalRounds) {
-                endGame();
-                return;
-            }
+        function validateEmail(email) {
+            const regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+            return regex.test(email);
+        }
 
+        function loadRound() {
             const round = options[currentRound];
             document.getElementById('option1').src = round.option1;
             document.getElementById('option2').src = round.option2;
             document.getElementById('round-number').textContent = currentRound + 1;
         }
 
-        function selectOption(selectedOption) {
-            // Add response for current round to the responses array
+        function selectOption(choice) {
             responses.push({
                 round: currentRound + 1,
-                choice: selectedOption,
-                email: email
+                choice: choice,
+                email: email,
+                option1: options[currentRound].option1,
+                option2: options[currentRound].option2,
             });
 
-            // Move to the next round
             currentRound++;
-
-            // Load next round if any, otherwise end game
-            loadRound();
+            if (currentRound >= totalRounds) {
+                document.getElementById('game').classList.add('hidden');
+                startEvaluation();
+            } else {
+                loadRound();
+            }
         }
 
-        function endGame() {
-            // Hide game section and show thank you section
-            document.getElementById('game').classList.add('hidden');
-            document.getElementById('thankyou').classList.remove('hidden');
+        function startEvaluation() {
+            document.getElementById('evaluation').classList.remove('hidden');
+            loadEvaluationRound();
+        }
 
-            // Send all responses to Google Sheets after all rounds
-            sendToGoogleSheet(responses);
+        function loadEvaluationRound() {
+            const evalData = responses[evaluationRound];
+            document.getElementById('eval-option1').src = evalData.option1;
+            document.getElementById('eval-option2').src = evalData.option2;
+            document.getElementById('eval-round-number').textContent = evaluationRound + 1;
+        }
+
+        function submitEvaluation() {
+            const selectedDurability = document.querySelector('input[name="durability"]:checked');
+            const selectedCost = document.querySelector('input[name="cost"]:checked');
+            const selectedConvenience = document.querySelector('input[name="convenience"]:checked');
+            const selectedHygienic = document.querySelector('input[name="hygienic"]:checked');
+            const selectedAesthetic = document.querySelector('input[name="aesthetic"]:checked');
+
+            if (!selectedDurability || !selectedCost || !selectedConvenience || !selectedHygienic || !selectedAesthetic) {
+                alert("Please complete the evaluation before submitting!");
+                return;
+            }
+
+            responses[evaluationRound].durability = selectedDurability.value;
+            responses[evaluationRound].cost = selectedCost.value;
+            responses[evaluationRound].convenience = selectedConvenience.value;
+            responses[evaluationRound].hygienic = selectedHygienic.value;
+            responses[evaluationRound].aesthetic = selectedAesthetic.value;
+
+            // Reset the radio buttons for the next evaluation round
+            document.querySelectorAll('input[name="durability"]').forEach(radio => radio.checked = false);
+            document.querySelectorAll('input[name="cost"]').forEach(radio => radio.checked = false);
+            document.querySelectorAll('input[name="convenience"]').forEach(radio => radio.checked = false);
+            document.querySelectorAll('input[name="hygienic"]').forEach(radio => radio.checked = false);
+            document.querySelectorAll('input[name="aesthetic"]').forEach(radio => radio.checked = false);
+
+            evaluationRound++;
+
+            // Update the button text depending on the round
+            const button = document.getElementById('evaluation-submit-button');
+            if (evaluationRound < totalRounds) {
+                button.textContent = 'Next';
+            } else {
+                button.textContent = 'Submit Evaluation';
+            }
+
+            if (evaluationRound >= totalRounds) {
+                document.getElementById('evaluation').classList.add('hidden');
+                document.getElementById('thankyou').classList.remove('hidden');
+                sendToGoogleSheet(responses);
+            } else {
+                loadEvaluationRound();
+            }
+        }
+
+        function sendToGoogleSheet(data) {
+            const formDataString = data.map(entry =>
+                Object.keys(entry)
+                    .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(entry[key])}`)
+                    .join('&')
+            ).join('&');
+
+            fetch('https://script.google.com/macros/s/AKfycbz3Lv5fzZq7w4KHaX4RvDefOWV4i6o4GNcE8QAEDafIfauYzS635Yjpz3oL71LMvR2ycA/exec', {
+                method: "POST",
+                body: formDataString,
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded;charset=utf-8",
+                },
+            });
         }
     </script>
 </body>
