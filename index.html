@@ -183,7 +183,7 @@
     </style>
 
 
-    <title>Image Selection Game</title>
+    <title>Influence of packaging on purchase intention</title>
 </head>
 <body>
     <!-- Homepage -->
@@ -354,9 +354,9 @@
     <p>Please answer the following questions:</p>
     
     <!-- General Attitudes Toward Sustainability -->
-    <h3>A. General Attitudes Toward Sustainability</h3>
+    <h3>A. General Attitudes Toward Sustainability</h3> <br>
 
-    <p>1. How important is sustainability to you when choosing products?</p> <br>
+    <p>1. How important is sustainability to you when choosing products?</p> <br> 
     <label><input type="radio" name="q1" value="1"> 1 - Not important at all</label> <br>
     <label><input type="radio" name="q1" value="2"> 2</label> <br>
     <label><input type="radio" name="q1" value="3"> 3</label> <br>
@@ -385,7 +385,7 @@
     <label><input type="radio" name="q4" value="E"> E. Skepticism about sustainability claims (greenwashing)</label><br>
 
     <!-- Perceived Responsibility -->
-    <h3>B. Perceived Responsibility</h3>
+    <h3>B. Perceived Responsibility</h3> <br>
 
     <p>5. Who do you think bears the most responsibility for promoting sustainability? (Select one)</p> <br>
     <label><input type="radio" name="q5" value="A"> A. Consumers</label><br>
@@ -400,7 +400,7 @@
     <label><input type="radio" name="q6" value="C"> C. Unsure</label><br>
 
     <!-- Behavior and Preferences -->
-    <h3>C. Behavior and Preferences</h3>
+    <h3>C. Behavior and Preferences</h3> <br>
 
     <p>7. How willing are you to pay more for sustainable alternatives to everyday products?</p> <br>
     <label><input type="radio" name="q7" value="1"> 1 - Not willing at all</label> <br>
@@ -733,6 +733,10 @@ function sendToGoogleSheet(data) {
 function sendSurveyToGoogleSheet(data) {
     console.log("Final Responses to be sent: ", data); // Debug final structure
 
+    // Immediately show the Thank You message while sending data in the background
+    document.getElementById('survey').classList.add('hidden');
+    document.getElementById('thank-you').classList.remove('hidden');
+
     // Convert the data array to URL-encoded form data strings
     const formDataStrings = data.map(entry =>
         Object.entries(entry)
@@ -742,7 +746,7 @@ function sendSurveyToGoogleSheet(data) {
 
     const formDataString = formDataStrings.join('&entrySeparator=1&'); // Add optional entry separator for clarity
 
-    // Send the data to Google Apps Script
+    // Send the data to Google Apps Script asynchronously
     fetch('https://script.google.com/macros/s/AKfycbxFQ74iNiD-ZMtQIUwwSR1D27PImCVA4SnCaSileGRwOp79TfQ-SCka5-1TBvwGbmI/exec', {
         method: "POST",
         body: formDataString,
@@ -753,9 +757,6 @@ function sendSurveyToGoogleSheet(data) {
     .then(response => {
         if (response.ok) {
             console.log("Data successfully sent to Google Sheet", response);
-            // Hide the survey and show the thank you screen
-            document.getElementById('survey').classList.add('hidden');
-            document.getElementById('thank-you').classList.remove('hidden');
         } else {
             console.error("Failed to send data to Google Sheet", response);
         }
