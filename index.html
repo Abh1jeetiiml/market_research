@@ -76,6 +76,70 @@
             font-size: 1.5rem;
             padding: 50px;
         }
+
+        #survey, #thank-you {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            width: 100%;
+            max-width: 600px;
+            text-align: center;
+        }
+        h2 {
+            color: #333;
+        }
+        h3 {
+            color: #444;
+            margin-top: 30px;
+            font-size: 1.2em;
+        }
+        p {
+            color: #555;
+            font-size: 1em;
+            line-height: 1.5em;
+        }
+        label {
+            display: block;
+            margin: 10px 0;
+            text-align: left;
+            font-size: 1em;
+            color: #333;
+        }
+        .radio-group {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        .radio-group label {
+            display: inline-block;
+            margin-right: 10px;
+        }
+        input[type="radio"] {
+            margin-right: 8px;
+            cursor: pointer;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .hidden {
+            display: none;
+        }
+        .thank-you-message {
+            color: #4CAF50;
+            font-size: 1.2em;
+        }
+        
     </style>
     <title>Image Selection Game</title>
 </head>
@@ -168,142 +232,487 @@
     <div id="thankyou" class="container hidden thankyou">
         <h2 class="title">Thank you for participating!</h2>
     </div>
+<!-- Sustainability Round -->
+<div id="sustainability" class="container hidden">
+    <h2 class="subtitle mt-5">Sustainability Round</h2>
+    <h2>Round <span id="sustainability-round-number">1</span> of <span id="total-rounds">10</span></h2>
+    <div class="columns is-centered">
+        <div class="column is-narrow">
+            <img id="sustainability-option1" class="option-img" onclick="selectSustainabilityOption('A')" alt="Option 1">
+        </div>
+        <div class="column is-narrow">
+           <img id="sustainability-option2" class="option-img" onclick="selectSustainabilityOption('B')" alt="Option 2">
+        </div>
 
-    <script>
-        const totalRounds = 10;
-        let currentRound = 0;
-        let evaluationRound = 0;
-        let email = '';
-        const responses = [];
-        const options = [
-            { option1: "image1.jpeg", option2: "image2.jpeg" },
-            { option1: "image3.jpeg", option2: "image4.jpeg" },
-            { option1: "image5.jpeg", option2: "image6.jpeg" },
-            { option1: "image7.jpeg", option2: "image8.jpeg" },
-            { option1: "image9.jpeg", option2: "image10.jpeg" },
-            { option1: "image11.jpeg", option2: "image12.jpeg" },
-            { option1: "image13.jpeg", option2: "image14.jpeg" },
-            { option1: "image15.jpeg", option2: "image16.jpeg" },
-            { option1: "image17.jpeg", option2: "image18.jpeg" },
-            { option1: "image19.jpeg", option2: "image20.jpeg" }
-        ];
+    </div>
+</div>
 
-        function startGame() {
-            email = document.getElementById('email').value;
+<!-- Stage 4: Sustainability Survey -->
+<div id="stage4-survey" class="container hidden">
+    <h2 class="title mt-5">Sustainability Survey</h2>
+    <form id="survey-form">
+        <div class="field">
+            <label class="label">1. How important is sustainability to you when choosing products?</label>
+            <div class="control">
+                <div class="select">
+                    <select id="q1">
+                        <option value="1">1 - Not important at all</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5 - Extremely important</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="field">
+            <label class="label">2. How often do you consider the environmental impact of your purchases?</label>
+            <div class="control">
+                <div class="select">
+                    <select id="q2">
+                        <option value="1">1 - Never</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5 - Always</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="field">
+            <label class="label">3. What motivates you to choose sustainable products?</label>
+            <div class="control">
+                <label class="radio">
+                    <input type="radio" name="q3" value="A"> Environmental concerns
+                </label>
+                <label class="radio">
+                    <input type="radio" name="q3" value="B"> Health and safety
+                </label>
+                <label class="radio">
+                    <input type="radio" name="q3" value="C"> Cost savings in the long term
+                </label>
+                <label class="radio">
+                    <input type="radio" name="q3" value="D"> Brand reputation
+                </label>
+                <label class="radio">
+                    <input type="radio" name="q3" value="E"> Social pressure or influence
+                </label>
+            </div>
+        </div>
+        <div class="has-text-centered mt-5">
+            <button type="button" class="button is-primary" onclick="submitSurvey()">Submit Survey</button>
+        </div>
+    </form>
+</div>
 
-            // Validate the email format
-            if (!validateEmail(email)) {
-                alert('Please enter a valid email address!');
-                return;
-            }
+<div id="survey" class="hidden">
+    <h2>Survey on Sustainability</h2>
+    <p>Please answer the following questions:</p>
+    
+    <!-- General Attitudes Toward Sustainability -->
+    <h3>A. General Attitudes Toward Sustainability</h3>
 
-            document.getElementById('homepage').classList.add('hidden');
-            document.getElementById('game').classList.remove('hidden');
-            document.getElementById('total-rounds').textContent = totalRounds;
-            loadRound();
+    <p>1. How important is sustainability to you when choosing products?</p>
+    <label><input type="radio" name="q1" value="1"> 1 - Not important at all</label>
+    <label><input type="radio" name="q1" value="2"> 2</label>
+    <label><input type="radio" name="q1" value="3"> 3</label>
+    <label><input type="radio" name="q1" value="4"> 4</label>
+    <label><input type="radio" name="q1" value="5"> 5 - Extremely important</label><br>
+
+    <p>2. How often do you consider the environmental impact of your purchases?</p>
+    <label><input type="radio" name="q2" value="1"> 1 - Never</label>
+    <label><input type="radio" name="q2" value="2"> 2</label>
+    <label><input type="radio" name="q2" value="3"> 3</label>
+    <label><input type="radio" name="q2" value="4"> 4</label>
+    <label><input type="radio" name="q2" value="5"> 5 - Always</label><br>
+
+    <p>3. What motivates you to choose sustainable products? (Select one)</p>
+    <label><input type="radio" name="q3" value="A"> A. Environmental concerns</label><br>
+    <label><input type="radio" name="q3" value="B"> B. Health and safety</label><br>
+    <label><input type="radio" name="q3" value="C"> C. Cost savings in the long term</label><br>
+    <label><input type="radio" name="q3" value="D"> D. Brand reputation</label><br>
+    <label><input type="radio" name="q3" value="E"> E. Social pressure or influence</label><br>
+
+    <p>4. What discourages you from choosing sustainable products? (Select one)</p>
+    <label><input type="radio" name="q4" value="A"> A. Higher cost</label><br>
+    <label><input type="radio" name="q4" value="B"> B. Limited availability</label><br>
+    <label><input type="radio" name="q4" value="C"> C. Lack of awareness or information</label><br>
+    <label><input type="radio" name="q4" value="D"> D. Habit or convenience</label><br>
+    <label><input type="radio" name="q4" value="E"> E. Skepticism about sustainability claims (greenwashing)</label><br>
+
+    <!-- Perceived Responsibility -->
+    <h3>B. Perceived Responsibility</h3>
+
+    <p>5. Who do you think bears the most responsibility for promoting sustainability? (Select one)</p>
+    <label><input type="radio" name="q5" value="A"> A. Consumers</label><br>
+    <label><input type="radio" name="q5" value="B"> B. Corporations/Businesses</label><br>
+    <label><input type="radio" name="q5" value="C"> C. Governments</label><br>
+    <label><input type="radio" name="q5" value="D"> D. Non-profit organizations</label><br>
+    <label><input type="radio" name="q5" value="E"> E. All of the above equally</label><br>
+
+    <p>6. Do you believe your individual actions can significantly impact environmental sustainability?</p>
+    <label><input type="radio" name="q6" value="A"> A. Yes</label>
+    <label><input type="radio" name="q6" value="B"> B. No</label>
+    <label><input type="radio" name="q6" value="C"> C. Unsure</label><br>
+
+    <!-- Behavior and Preferences -->
+    <h3>C. Behavior and Preferences</h3>
+
+    <p>7. How willing are you to pay more for sustainable alternatives to everyday products?</p>
+    <label><input type="radio" name="q7" value="1"> 1 - Not willing at all</label>
+    <label><input type="radio" name="q7" value="2"> 2</label>
+    <label><input type="radio" name="q7" value="3"> 3</label>
+    <label><input type="radio" name="q7" value="4"> 4</label>
+    <label><input type="radio" name="q7" value="5"> 5 - Very willing</label><br>
+
+    <p>8. Do you currently recycle or compost at home?</p>
+    <label><input type="radio" name="q8" value="A"> A. Yes, regularly</label><br>
+    <label><input type="radio" name="q8" value="B"> B. Sometimes</label><br>
+    <label><input type="radio" name="q8" value="C"> C. Rarely</label><br>
+    <label><input type="radio" name="q8" value="D"> D. Never</label><br>
+
+    <p>9. Do you frequently take public transport over your own vehicle?</p>
+    <label><input type="radio" name="q9" value="A"> A. Yes, regularly</label><br>
+    <label><input type="radio" name="q9" value="B"> B. Sometimes</label><br>
+    <label><input type="radio" name="q9" value="C"> C. Rarely</label><br>
+    <label><input type="radio" name="q9" value="D"> D. Never</label><br>
+
+    <p>10. Have you ever avoided purchasing a product because it was not environmentally friendly?</p>
+    <label><input type="radio" name="q10" value="A"> A. Yes, often</label><br>
+    <label><input type="radio" name="q10" value="B"> B. Occasionally</label><br>
+    <label><input type="radio" name="q10" value="C"> C. Rarely</label><br>
+    <label><input type="radio" name="q10" value="D"> D. No, never</label><br>
+
+    <p>11. How often do you purchase from brands that openly promote their sustainability efforts?</p>
+    <label><input type="radio" name="q11" value="1"> 1 - Never</label>
+    <label><input type="radio" name="q11" value="2"> 2</label>
+    <label><input type="radio" name="q11" value="3"> 3</label>
+    <label><input type="radio" name="q11" value="4"> 4</label>
+    <label><input type="radio" name="q11" value="5"> 5 - Always</label><br>
+
+    <!-- Submit Button -->
+    <button onclick="submitSurvey()">Submit Survey</button>
+</div>
+
+<div id="thank-you" class="hidden">
+    <h2>Thank you for completing the survey!</h2>
+    <p>Your responses have been submitted successfully.</p>
+</div>
+
+<script>
+    const totalRounds = 10;
+    let currentRound = 0;
+    let evaluationRound = 0;
+    let sustainabilityRound = 0;
+    let email = '';
+    const responses = [];
+    const options = [
+        { option1: "image1.jpeg", option2: "image2.jpeg" },
+        { option1: "image3.jpeg", option2: "image4.jpeg" },
+        { option1: "image5.jpeg", option2: "image6.jpeg" },
+        { option1: "image7.jpeg", option2: "image8.jpeg" },
+        { option1: "image9.jpeg", option2: "image10.jpeg" },
+        { option1: "image11.jpeg", option2: "image12.jpeg" },
+        { option1: "image13.jpeg", option2: "image14.jpeg" },
+        { option1: "image15.jpeg", option2: "image16.jpeg" },
+        { option1: "image17.jpeg", option2: "image18.jpeg" },
+        { option1: "image19.jpeg", option2: "image20.jpeg" }
+    ];
+
+    // Separate arrays for different phases
+let mainResponses = [];
+let evaluationResponses = [];
+let sustainabilityResponses = [];
+
+function loadRound() {
+    const round = options[currentRound];
+    document.getElementById('option1').src = round.option1;
+    document.getElementById('option2').src = round.option2;
+    document.getElementById('round-number').textContent = currentRound + 1;
+}
+
+// Start the game function
+function startGame() {
+    email = document.getElementById('email').value;
+
+    // Validate the email format
+    if (!validateEmail(email)) {
+        alert('Please enter a valid email address!');
+        return;
+    }
+
+    document.getElementById('homepage').classList.add('hidden');
+    document.getElementById('game').classList.remove('hidden');
+    document.getElementById('total-rounds').textContent = totalRounds;
+    loadRound();  // Call loadRound function
+}
+
+// Called when user selects an option in the game round
+function selectOption(choice) {
+    // Push response with the selected option
+    responses.push({
+        round: currentRound + 1,
+        choice: choice,
+        email: email,
+        option1: options[currentRound].option1,
+        option2: options[currentRound].option2,
+        sustainability: document.querySelector('input[name="sustainability"]:checked')?.value || 'Not Selected'
+    });
+
+    // Log responses to check
+    console.log("Responses so far: ", responses);
+
+    currentRound++;
+    if (currentRound >= totalRounds) {
+        document.getElementById('game').classList.add('hidden');
+        startEvaluation();
+    } else {
+        loadRound();
+    }
+}
+
+
+
+function startEvaluation() {
+    document.getElementById('evaluation').classList.remove('hidden');
+    loadEvaluationRound();
+}
+
+function loadEvaluationRound() {
+    const evalData = responses[evaluationRound]; // Access the mainResponses array here
+    if (!evalData) {
+        console.error('No data found for this evaluation round');
+        return;
+    }
+
+    document.getElementById('eval-option1').src = evalData.option1;
+    document.getElementById('eval-option2').src = evalData.option2;
+    document.getElementById('eval-round-number').textContent = evaluationRound + 1;
+}
+
+
+
+
+function submitEvaluation() {
+    const evalData = responses[evaluationRound];
+    
+    if (!evalData) {
+        console.error(`No data found for evaluation round: ${evaluationRound}`);
+        return;
+    }
+
+    // Capture values for durability, cost, convenience, hygienic, and aesthetic
+    evalData.durability = document.querySelector('input[name="durability"]:checked')?.value || 'Not Selected';
+    evalData.cost = document.querySelector('input[name="cost"]:checked')?.value || 'Not Selected';
+    evalData.convenience = document.querySelector('input[name="convenience"]:checked')?.value || 'Not Selected';
+    evalData.hygienic = document.querySelector('input[name="hygienic"]:checked')?.value || 'Not Selected';
+    evalData.aesthetic = document.querySelector('input[name="aesthetic"]:checked')?.value || 'Not Selected';
+
+    // Log the evaluation data for debugging
+    console.log("Evaluation Data for round", evaluationRound, evalData);
+
+    // Reset the radio buttons for the next evaluation round
+    document.querySelectorAll('input[name="durability"]').forEach(radio => radio.checked = false);
+    document.querySelectorAll('input[name="cost"]').forEach(radio => radio.checked = false);
+    document.querySelectorAll('input[name="convenience"]').forEach(radio => radio.checked = false);
+    document.querySelectorAll('input[name="hygienic"]').forEach(radio => radio.checked = false);
+    document.querySelectorAll('input[name="aesthetic"]').forEach(radio => radio.checked = false);
+
+    evaluationRound++;
+
+    const button = document.getElementById('evaluation-submit-button');
+    if (evaluationRound < totalRounds) {
+        button.textContent = 'Next';
+    } else {
+        button.textContent = 'Submit Evaluation';
+    }
+
+    if (evaluationRound >= totalRounds) {
+        document.getElementById('evaluation').classList.add('hidden');
+        startSustainabilityRound();
+    } else {
+        loadEvaluationRound();
+    }
+}
+
+
+
+function selectSustainabilityOption(choice) {
+    if (responses[sustainabilityRound]) {
+        // Update the existing response for this round
+        responses[sustainabilityRound].sustainabilityChoice = choice;
+    } else {
+        console.error(`No existing response found for round ${sustainabilityRound + 1}`);
+    }
+
+    sustainabilityRound++;
+    if (sustainabilityRound >= totalRounds) {
+        document.getElementById('sustainability').classList.add('hidden');
+        document.getElementById('survey').classList.remove('hidden');
+        sendToGoogleSheet(responses); // Send all responses, now properly updated
+    } else {
+        loadSustainabilityRound(); // Load the next round if any
+    }
+}
+
+
+function validateEmail(email) {
+    // Regular expression to check if the email is in a valid format
+    const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    return emailPattern.test(email);
+}
+
+function startSustainabilityRound() {
+    document.getElementById('sustainability').classList.remove('hidden');
+    loadSustainabilityRound();
+}
+
+function loadSustainabilityRound() {
+    const sustainabilityData = options[sustainabilityRound];
+    document.getElementById('sustainability-option1').src = sustainabilityData.option1;
+    document.getElementById('sustainability-option2').src = sustainabilityData.option2;
+    document.getElementById('sustainability-round-number').textContent = sustainabilityRound + 1;
+}
+
+function submitSustainability() {
+    const selectedSustainability = document.querySelector('input[name="sustainable"]:checked');
+
+    // Check if an option is selected
+    if (!selectedSustainability) {
+        alert("Please select an option before submitting!");
+        return;
+    }
+
+    // Capture the sustainability choice
+    if (!responses[sustainabilityRound]) {
+        responses[sustainabilityRound] = {}; // Ensure the round object exists
+    }
+    responses[sustainabilityRound].sustainable = selectedSustainability.value;
+
+    // Reset the radio buttons for the next sustainability round
+    document.querySelectorAll('input[name="sustainable"]').forEach(radio => radio.checked = false);
+
+    // Increment the round counter
+    sustainabilityRound++;
+
+    // Update the button text based on the round
+    const button = document.getElementById('sustainability-submit-button');
+    if (sustainabilityRound < totalRounds) {
+        button.textContent = 'Next';
+    } else {
+        button.textContent = 'Finish';
+    }
+
+    // Check if all rounds are complete
+    if (sustainabilityRound >= totalRounds) {
+        document.getElementById('sustainability').classList.add('hidden');
+        document.getElementById('survey').classList.remove('hidden');
+        sendToGoogleSheet(responses); // Send all responses including sustainability
+    } else {
+        loadSustainabilityRound(); // Load the next round if any
+    }
+}
+
+
+function startSurvey() {
+    document.getElementById('survey').classList.remove('hidden');
+}
+
+// Submit survey responses
+function submitSurvey() {
+    const surveyData = {
+        email: email,
+        q1: document.querySelector('input[name="q1"]:checked')?.value || 'Not Answered',
+        q2: document.querySelector('input[name="q2"]:checked')?.value || 'Not Answered',
+        q3: document.querySelector('input[name="q3"]:checked')?.value || 'Not Answered',
+        q4: document.querySelector('input[name="q4"]:checked')?.value || 'Not Answered',
+        q5: document.querySelector('input[name="q5"]:checked')?.value || 'Not Answered',
+        q6: document.querySelector('input[name="q6"]:checked')?.value || 'Not Answered',
+        q7: document.querySelector('input[name="q7"]:checked')?.value || 'Not Answered',
+        q8: document.querySelector('input[name="q8"]:checked')?.value || 'Not Answered',
+        q9: document.querySelector('input[name="q9"]:checked')?.value || 'Not Answered',
+        q10: document.querySelector('input[name="q10"]:checked')?.value || 'Not Answered',
+        q11: document.querySelector('input[name="q11"]:checked')?.value || 'Not Answered',
+    };
+
+    sendSurveyToGoogleSheet([surveyData]);
+}
+
+
+
+
+function sendToGoogleSheet(data) {
+    console.log("Final Responses to be sent: ", data); // Debug final structure
+
+    // Convert the data array to URL-encoded form data strings
+    const formDataStrings = data.map(entry =>
+        Object.entries(entry)
+            .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value || '')}`) // Handle missing values
+            .join('&')
+    );
+
+    const formDataString = formDataStrings.join('&entrySeparator=1&'); // Add optional entry separator for clarity
+
+    // Send the data to Google Apps Script
+    fetch('https://script.google.com/macros/s/AKfycbzkmZ36o0H1RvxaITjLW3vpTC3MbQ8CJ04EQxZW6j7XZ7lLvMHpisTBRA3kwUjYUDDr/exec', {
+        method: "POST",
+        body: formDataString,
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded;charset=utf-8",
+        },
+    })
+    .then(response => {
+        if (response.ok) {
+            console.log("Data successfully sent to Google Sheet", response);
+        } else {
+            console.error("Failed to send data to Google Sheet", response);
         }
+    })
+    .catch(error => {
+        console.error("Error sending data to Google Sheet", error);
+    });
+}
 
-        function validateEmail(email) {
-            const regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
-            return regex.test(email);
+
+function sendSurveyToGoogleSheet(data) {
+    console.log("Final Responses to be sent: ", data); // Debug final structure
+
+    // Convert the data array to URL-encoded form data strings
+    const formDataStrings = data.map(entry =>
+        Object.entries(entry)
+            .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value || '')}`) // Handle missing values
+            .join('&')
+    );
+
+    const formDataString = formDataStrings.join('&entrySeparator=1&'); // Add optional entry separator for clarity
+
+    // Send the data to Google Apps Script
+    fetch('https://script.google.com/macros/s/AKfycbxFQ74iNiD-ZMtQIUwwSR1D27PImCVA4SnCaSileGRwOp79TfQ-SCka5-1TBvwGbmI/exec', {
+        method: "POST",
+        body: formDataString,
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded;charset=utf-8",
+        },
+    })
+    .then(response => {
+        if (response.ok) {
+            console.log("Data successfully sent to Google Sheet", response);
+            // Hide the survey and show the thank you screen
+            document.getElementById('survey').classList.add('hidden');
+            document.getElementById('thank-you').classList.remove('hidden');
+        } else {
+            console.error("Failed to send data to Google Sheet", response);
         }
+    })
+    .catch(error => {
+        console.error("Error sending data to Google Sheet", error);
+    });
+}
 
-        function loadRound() {
-            const round = options[currentRound];
-            document.getElementById('option1').src = round.option1;
-            document.getElementById('option2').src = round.option2;
-            document.getElementById('round-number').textContent = currentRound + 1;
-        }
 
-        function selectOption(choice) {
-            responses.push({
-                round: currentRound + 1,
-                choice: choice,
-                email: email,
-                option1: options[currentRound].option1,
-                option2: options[currentRound].option2,
-            });
 
-            currentRound++;
-            if (currentRound >= totalRounds) {
-                document.getElementById('game').classList.add('hidden');
-                startEvaluation();
-            } else {
-                loadRound();
-            }
-        }
+</script>
 
-        function startEvaluation() {
-            document.getElementById('evaluation').classList.remove('hidden');
-            loadEvaluationRound();
-        }
 
-        function loadEvaluationRound() {
-            const evalData = responses[evaluationRound];
-            document.getElementById('eval-option1').src = evalData.option1;
-            document.getElementById('eval-option2').src = evalData.option2;
-            document.getElementById('eval-round-number').textContent = evaluationRound + 1;
-        }
-
-        function submitEvaluation() {
-            const selectedDurability = document.querySelector('input[name="durability"]:checked');
-            const selectedCost = document.querySelector('input[name="cost"]:checked');
-            const selectedConvenience = document.querySelector('input[name="convenience"]:checked');
-            const selectedHygienic = document.querySelector('input[name="hygienic"]:checked');
-            const selectedAesthetic = document.querySelector('input[name="aesthetic"]:checked');
-
-            if (!selectedDurability || !selectedCost || !selectedConvenience || !selectedHygienic || !selectedAesthetic) {
-                alert("Please complete the evaluation before submitting!");
-                return;
-            }
-
-            responses[evaluationRound].durability = selectedDurability.value;
-            responses[evaluationRound].cost = selectedCost.value;
-            responses[evaluationRound].convenience = selectedConvenience.value;
-            responses[evaluationRound].hygienic = selectedHygienic.value;
-            responses[evaluationRound].aesthetic = selectedAesthetic.value;
-
-            // Reset the radio buttons for the next evaluation round
-            document.querySelectorAll('input[name="durability"]').forEach(radio => radio.checked = false);
-            document.querySelectorAll('input[name="cost"]').forEach(radio => radio.checked = false);
-            document.querySelectorAll('input[name="convenience"]').forEach(radio => radio.checked = false);
-            document.querySelectorAll('input[name="hygienic"]').forEach(radio => radio.checked = false);
-            document.querySelectorAll('input[name="aesthetic"]').forEach(radio => radio.checked = false);
-
-            evaluationRound++;
-
-            // Update the button text depending on the round
-            const button = document.getElementById('evaluation-submit-button');
-            if (evaluationRound < totalRounds) {
-                button.textContent = 'Next';
-            } else {
-                button.textContent = 'Submit Evaluation';
-            }
-
-            if (evaluationRound >= totalRounds) {
-                document.getElementById('evaluation').classList.add('hidden');
-                document.getElementById('thankyou').classList.remove('hidden');
-                sendToGoogleSheet(responses);
-            } else {
-                loadEvaluationRound();
-            }
-        }
-
-        function sendToGoogleSheet(data) {
-            const formDataString = data.map(entry =>
-                Object.keys(entry)
-                    .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(entry[key])}`)
-                    .join('&')
-            ).join('&');
-
-            fetch('https://script.google.com/macros/s/AKfycbz3Lv5fzZq7w4KHaX4RvDefOWV4i6o4GNcE8QAEDafIfauYzS635Yjpz3oL71LMvR2ycA/exec', {
-                method: "POST",
-                body: formDataString,
-                headers: {
-                    "Content-Type": "application/x-www-form-urlencoded;charset=utf-8",
-                },
-            });
-        }
-    </script>
 </body>
 </html>
