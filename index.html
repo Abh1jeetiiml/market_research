@@ -44,6 +44,24 @@
     }
 }
 
+.question-box {
+    background-color: #e9f5ff;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    border: 1px solid #cde5ff;
+}
+        .container1 {
+            max-width: 600px;
+            margin: 10px auto;
+            background: url('bg.png') no-repeat center center; /* Replace with the path to your image */
+         background-size: cover;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+
+        }
 
         .container {
             max-width: 960px;
@@ -193,6 +211,27 @@
         display: block;
         margin-left: 20px;
     }
+
+    .field {
+            margin-bottom: 20px;
+        }
+
+    .control input, .control .radio {
+            margin-right: 10px;
+        }
+
+    .control input[type="email"],
+    .control input[type="number"] {
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            padding: 10px;
+            width: 100%;
+        }
+    @media (max-width: 768px) {
+            .container1 {
+                margin: 20px;
+                padding: 15px;
+            }
     </style>
 
 
@@ -200,20 +239,131 @@
 </head>
 <body>
     <!-- Homepage -->
-    <div id="homepage" class="container">
-        <h1 class="title mt-5">Welcome to the Market Research Survey</h1>
-        <form id="start-form">
-            <div class="field">
-                <label class="label">Email</label>
-                <div class="control">
-                    <input class="input" type="email" id="email" placeholder="Enter your email" required>
-                </div>
+ <div id="homepage" class="container1">
+    <h1 class="title mt-5" style="color: white; text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5);">Welcome to the Market Research Survey</h1>
+    <form id="start-form">
+        <div class="question-box">
+            <label class="label">Email</label>
+            <div class="control">
+                <input class="input" type="email" id="email" placeholder="Enter your email" required>
             </div>
-            <div class="field has-text-centered">
-                <button type="button" class="button is-primary" onclick="startGame()">Start Game</button>
+        </div>
+
+        <div class="question-box">
+            <label class="label">Age</label>
+            <div class="control">
+                <input class="input" type="number" id="age" placeholder="Enter your age" required>
             </div>
-        </form>
-    </div>
+        </div>
+
+        <div class="question-box">
+            <label class="label">Gender</label>
+            <div class="control">
+                <label class="radio">
+                    <input type="radio" name="gender" value="Male"> Male
+                </label> <br>
+                <label class="radio">
+                    <input type="radio" name="gender" value="Female"> Female
+                </label> <br>
+                <label class="radio">
+                    <input type="radio" name="gender" value="Non-binary"> Non-binary
+                </label> <br>
+                <label class="radio">
+                    <input type="radio" name="gender" value="Prefer not to say"> Prefer not to say
+                </label> <br>
+            </div>
+        </div>
+
+        <div class="question-box">
+            <label class="label">Family Income Group (Monthly)</label>
+            <div class="control">
+                <label class="radio">
+                    <input type="radio" name="income" value="Below ₹25,000"> Below ₹25,000
+                </label> <br>
+                <label class="radio">
+                    <input type="radio" name="income" value="₹25,000 - ₹50,000"> ₹25,000 - ₹50,000
+                </label> <br>
+                <label class="radio">
+                    <input type="radio" name="income" value="₹50,000 - ₹75,000"> ₹50,000 - ₹75,000
+                </label> <br>
+                <label class="radio">
+                    <input type="radio" name="income" value="₹75,000 - ₹1,00,000"> ₹75,000 - ₹1,00,000
+                </label> <br>
+                <label class="radio">
+                    <input type="radio" name="income" value="₹1,00,000 - ₹2,00,000"> ₹1,00,000 - ₹2,00,000
+                </label> <br>
+                <label class="radio">
+                    <input type="radio" name="income" value="Above ₹2,00,000"> Above ₹2,00,000
+                </label>
+            </div>
+        </div>
+
+        <div class="question-box">
+            <label class="label">Education Level</label>
+            <div class="control">
+                <label class="radio">
+                    <input type="radio" name="education" value="No formal education"> No formal education
+                </label> <br>
+                <label class="radio">
+                    <input type="radio" name="education" value="High school"> High school
+                </label> <br>
+                <label class="radio">
+                    <input type="radio" name="education" value="Undergraduate degree"> Undergraduate degree
+                </label> <br>
+                <label class="radio">
+                    <input type="radio" name="education" value="Postgraduate degree"> Postgraduate degree
+                </label> <br>
+                <label class="radio">
+                    <input type="radio" name="education" value="Doctorate or higher"> Doctorate or higher
+                </label>
+            </div>
+        </div>
+
+        <div class="question-box">
+            <label class="label">Occupation</label>
+            <div class="control">
+                <label class="radio">
+                    <input type="radio" name="occupation" value="Student"> Student
+                </label> <br>
+                <label class="radio">
+                    <input type="radio" name="occupation" value="Employed (Private Sector)"> Employed (Private Sector)
+                </label> <br>
+                <label class="radio">
+                    <input type="radio" name="occupation" value="Employed (Government Sector)"> Employed (Government Sector)
+                </label> <br>
+                <label class="radio">
+                    <input type="radio" name="occupation" value="Self-employed"> Self-employed
+                </label> <br>
+                <label class="radio">
+                    <input type="radio" name="occupation" value="Unemployed"> Unemployed
+                </label> <br>
+                <label class="radio">
+                    <input type="radio" name="occupation" value="Retired"> Retired
+                </label>
+            </div>
+        </div>
+
+        <div class="question-box">
+            <label class="label">Area of Residence</label>
+            <div class="control">
+                <label class="radio">
+                    <input type="radio" name="residence" value="Urban"> Urban
+                </label> <br>
+                <label class="radio">
+                    <input type="radio" name="residence" value="Semi-Urban"> Semi-Urban
+                </label> <br>
+                <label class="radio">
+                    <input type="radio" name="residence" value="Rural"> Rural
+                </label>
+            </div>
+        </div>
+
+        <div class="field has-text-centered">
+            <button type="button" class="button is-primary" onclick="startGame()">Start Game</button>
+        </div>
+    </form>
+</div>
+
 
     <!-- Game Section -->
     <div id="game" class="container hidden">
@@ -469,11 +619,18 @@
 </div>
 
 <script>
-    const totalRounds = 10;
-    let currentRound = 0;
-    let evaluationRound = 0;
-    let sustainabilityRound = 0;
-    let email = '';
+
+const totalRounds = 10;
+let currentRound = 0;
+let evaluationRound = 0;
+let sustainabilityRound = 0;
+let email = '';
+let age = '';
+let gender = '';
+let incomeGroup = '';
+let educationLevel = '';
+let occupation = '';
+let areaOfResidence = '';
     const responses = [];
     const options = [
         { option1: "image1.jpeg", option2: "image2.jpeg" },
@@ -503,6 +660,12 @@ function loadRound() {
 // Start the game function
 function startGame() {
     email = document.getElementById('email').value;
+    age = document.getElementById('age').value;
+    gender = document.querySelector('input[name="gender"]:checked')?.value;
+    incomeGroup = document.querySelector('input[name="income"]:checked')?.value;
+    educationLevel = document.querySelector('input[name="education"]:checked')?.value;
+    occupation = document.querySelector('input[name="occupation"]:checked')?.value;
+    areaOfResidence = document.querySelector('input[name="residence"]:checked')?.value;
 
     // Validate the email format
     if (!validateEmail(email)) {
@@ -510,6 +673,10 @@ function startGame() {
         return;
     }
 
+ if (!age || !gender || !incomeGroup || !educationLevel || !occupation || !areaOfResidence) {
+        alert('Please fill out all fields!');
+        return;
+    }
     document.getElementById('homepage').classList.add('hidden');
     document.getElementById('game').classList.remove('hidden');
     document.getElementById('total-rounds').textContent = totalRounds;
@@ -523,6 +690,12 @@ function selectOption(choice) {
         round: currentRound + 1,
         choice: choice,
         email: email,
+        age: age,
+        gender: gender,
+        incomeGroup: incomeGroup,
+        educationLevel: educationLevel,
+        occupation: occupation,
+        areaOfResidence: areaOfResidence,
         option1: options[currentRound].option1,
         option2: options[currentRound].option2,
         sustainability: document.querySelector('input[name="sustainability"]:checked')?.value || 'Not Selected'
@@ -703,6 +876,12 @@ function startSurvey() {
 function submitSurvey() {
     const surveyData = {
         email: email,
+        age: age,
+        gender: gender,
+        incomeGroup: incomeGroup,
+        educationLevel: educationLevel,
+        occupation: occupation,
+        areaOfResidence: areaOfResidence,
         q1: document.querySelector('input[name="q1"]:checked')?.value || 'Not Answered',
         q2: document.querySelector('input[name="q2"]:checked')?.value || 'Not Answered',
         q3: document.querySelector('input[name="q3"]:checked')?.value || 'Not Answered',
@@ -735,7 +914,7 @@ function sendToGoogleSheet(data) {
     const formDataString = formDataStrings.join('&entrySeparator=1&'); // Add optional entry separator for clarity
 
     // Send the data to Google Apps Script
-    fetch('https://script.google.com/macros/s/AKfycbzkmZ36o0H1RvxaITjLW3vpTC3MbQ8CJ04EQxZW6j7XZ7lLvMHpisTBRA3kwUjYUDDr/exec', {
+    fetch('https://script.google.com/macros/s/AKfycbw349hI_HoJdVC40Jhu5PM7a5oSPuuXR2ylFyUUaV8G22mn6ArIz0af0LiGeyQs-Ezo/exec', {
         method: "POST",
         body: formDataString,
         headers: {
@@ -772,7 +951,7 @@ function sendSurveyToGoogleSheet(data) {
     const formDataString = formDataStrings.join('&entrySeparator=1&'); // Add optional entry separator for clarity
 
     // Send the data to Google Apps Script asynchronously
-    fetch('https://script.google.com/macros/s/AKfycbxFQ74iNiD-ZMtQIUwwSR1D27PImCVA4SnCaSileGRwOp79TfQ-SCka5-1TBvwGbmI/exec', {
+    fetch('https://script.google.com/macros/s/AKfycbwnUpyaEmZIcN6uWMl_hiAGiHnIRNxaPeTjZfK9Nq7_05_8Hck98cAHa5ggHEHWRqXX/exec', {
         method: "POST",
         body: formDataString,
         headers: {
