@@ -179,7 +179,20 @@
             color: #4CAF50;
             font-size: 1.2em;
         }
-        
+        .question-container {
+        background-color: #f0f0f0;
+        padding: 10px;
+        margin-bottom: 10px;
+        border-radius: 5px;
+    }
+    .question-container p {
+        margin: 0;
+        font-weight: bold;
+    }
+    .question-container label {
+        display: block;
+        margin-left: 20px;
+    }
     </style>
 
 
@@ -204,7 +217,7 @@
 
     <!-- Game Section -->
     <div id="game" class="container hidden">
-        <h3 class="subtitle mt-5">Which one are you more likely to purchase?</h3>
+        <h3 class="subtitle mt-5" style="font-family: 'Roboto', sans-serif;">Which one are you more likely to purchase?</h3>
         <h2 class="subtitle mt-5">Round <span id="round-number">1</span> of <span id="total-rounds">10</span></h2>
         <div class="columns is-centered">
             <div class="column is-narrow">
@@ -217,7 +230,7 @@
     </div>
 
     <!-- Evaluation Section -->
-    <div id="evaluation" class="container hidden">
+    <div id="evaluation" class="container hidden" style="font-family: 'Roboto', sans-serif;">
       <h4 class="title mt-5" style="font-size: 17px;">Choose the option which is better of the two on the 5 parameters mentioned below (eg. if option A looks more durable than option B, choose A for durability) Round-<span id="eval-round-number"></span></h4>
 <div class="columns is-centered is-mobile">
     <div class="column is-narrow">
@@ -353,9 +366,7 @@
     <h2>Survey on Sustainability</h2>
     <p>Please answer the following questions:</p>
     
-    <!-- General Attitudes Toward Sustainability -->
-    <h3>A. General Attitudes Toward Sustainability</h3> <br>
-
+<div class="question-container">
     <p>1. How important is sustainability to you when choosing products?</p> <br> 
     <label><input type="radio" name="q1" value="1"> 1 - Not important at all</label> <br>
     <label><input type="radio" name="q1" value="2"> 2</label> <br>
@@ -363,6 +374,8 @@
     <label><input type="radio" name="q1" value="4"> 4</label> <br>
     <label><input type="radio" name="q1" value="5"> 5 - Extremely important</label><br> <br>
 
+</div>
+<div class="question-container">
     <p>2. How often do you consider the environmental impact of your purchases?</p> <br>
     <label><input type="radio" name="q2" value="1"> 1 - Never</label> <br>
     <label><input type="radio" name="q2" value="2"> 2</label> <br>
@@ -370,6 +383,8 @@
     <label><input type="radio" name="q2" value="4"> 4</label> <br>
     <label><input type="radio" name="q2" value="5"> 5 - Always</label><br>
 
+</div>
+<div class="question-container">
     <p>3. What motivates you to choose sustainable products? (Select one)</p> <br>
     <label><input type="radio" name="q3" value="A"> A. Environmental concerns</label><br>
     <label><input type="radio" name="q3" value="B"> B. Health and safety</label><br>
@@ -377,6 +392,8 @@
     <label><input type="radio" name="q3" value="D"> D. Brand reputation</label><br>
     <label><input type="radio" name="q3" value="E"> E. Social pressure or influence</label><br>
 
+</div>
+<div class="question-container">
     <p>4. What discourages you from choosing sustainable products? (Select one)</p><br>
     <label><input type="radio" name="q4" value="A"> A. Higher cost</label><br>
     <label><input type="radio" name="q4" value="B"> B. Limited availability</label><br>
@@ -384,9 +401,8 @@
     <label><input type="radio" name="q4" value="D"> D. Habit or convenience</label><br>
     <label><input type="radio" name="q4" value="E"> E. Skepticism about sustainability claims (greenwashing)</label><br>
 
-    <!-- Perceived Responsibility -->
-    <h3>B. Perceived Responsibility</h3> <br>
-
+</div>
+<div class="question-container">
     <p>5. Who do you think bears the most responsibility for promoting sustainability? (Select one)</p> <br>
     <label><input type="radio" name="q5" value="A"> A. Consumers</label><br>
     <label><input type="radio" name="q5" value="B"> B. Corporations/Businesses</label><br>
@@ -394,14 +410,15 @@
     <label><input type="radio" name="q5" value="D"> D. Non-profit organizations</label><br>
     <label><input type="radio" name="q5" value="E"> E. All of the above equally</label><br>
 
+</div>
+<div class="question-container">
     <p>6. Do you believe your individual actions can significantly impact environmental sustainability?</p> <br>
     <label><input type="radio" name="q6" value="A"> A. Yes</label> <br>
     <label><input type="radio" name="q6" value="B"> B. No</label> <br>
     <label><input type="radio" name="q6" value="C"> C. Unsure</label><br>
 
-    <!-- Behavior and Preferences -->
-    <h3>C. Behavior and Preferences</h3> <br>
-
+</div>
+<div class="question-container">
     <p>7. How willing are you to pay more for sustainable alternatives to everyday products?</p> <br>
     <label><input type="radio" name="q7" value="1"> 1 - Not willing at all</label> <br>
     <label><input type="radio" name="q7" value="2"> 2</label> <br>
@@ -409,31 +426,39 @@
     <label><input type="radio" name="q7" value="4"> 4</label> <br>
     <label><input type="radio" name="q7" value="5"> 5 - Very willing</label><br>
 
+</div>
+<div class="question-container">
     <p>8. Do you currently recycle or compost at home?</p>
     <label><input type="radio" name="q8" value="A"> A. Yes, regularly</label><br>
     <label><input type="radio" name="q8" value="B"> B. Sometimes</label><br>
     <label><input type="radio" name="q8" value="C"> C. Rarely</label><br>
     <label><input type="radio" name="q8" value="D"> D. Never</label><br>
 
+ </div>
+<div class="question-container">
     <p>9. Do you frequently take public transport over your own vehicle?</p>
     <label><input type="radio" name="q9" value="A"> A. Yes, regularly</label><br>
     <label><input type="radio" name="q9" value="B"> B. Sometimes</label><br>
     <label><input type="radio" name="q9" value="C"> C. Rarely</label><br>
     <label><input type="radio" name="q9" value="D"> D. Never</label><br>
 
+</div>
+<div class="question-container">
     <p>10. Have you ever avoided purchasing a product because it was not environmentally friendly?</p>
     <label><input type="radio" name="q10" value="A"> A. Yes, often</label><br>
     <label><input type="radio" name="q10" value="B"> B. Occasionally</label><br>
     <label><input type="radio" name="q10" value="C"> C. Rarely</label><br>
     <label><input type="radio" name="q10" value="D"> D. No, never</label><br>
 
+</div>
+<div class="question-container">
     <p>11. How often do you purchase from brands that openly promote their sustainability efforts?</p>
     <label><input type="radio" name="q11" value="1"> 1 - Never</label> <br>
     <label><input type="radio" name="q11" value="2"> 2</label> <br>
     <label><input type="radio" name="q11" value="3"> 3</label> <br>
     <label><input type="radio" name="q11" value="4"> 4</label> <br>
     <label><input type="radio" name="q11" value="5"> 5 - Always</label><br>
-
+</div>
     <!-- Submit Button -->
     <button onclick="submitSurvey()">Submit Survey</button>
 </div>
